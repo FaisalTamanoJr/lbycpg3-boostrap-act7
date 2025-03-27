@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const postPage = document.getElementById("post-page");
     const friendListPage = document.getElementById("friend-page");
     const editProfilePage = document.getElementById("edit-profile-page");
+    const commentPage = document.getElementById("comment-page");
 
     const loginForm = document.getElementById("login-form");
     const logoutBtn = document.getElementById("logout-btn");
@@ -20,10 +21,47 @@ document.addEventListener("DOMContentLoaded", () => {
     let profilePhoto = "default-avatar.jpg";
     let profileName = "Username";
 
+    let commentStorage = [
+        ["All posts contain 2 random comments","2 random comments"]
+    ];
+
+    let commentButtonCount = 0;
+
     function showPage(page) {
-        [loginPage, homePage, postPage, friendListPage, editProfilePage].forEach(p => p.classList.add("d-none"));
+        [loginPage, homePage, postPage, friendListPage, editProfilePage, commentPage].forEach(p => p.classList.add("d-none"));
         page.classList.remove("d-none");
     }
+
+    function loadCommentPage(id) {
+        let commentContainer = document.getElementById("comments");
+        commentContainer.innerHTML=``;
+        commentContainer.innerHTML+=`
+        <div class="card p-3 my-2">
+            <p>${commentStorage[id][0]}</p>
+        </div>
+        `;
+        commentContainer.innerHTML+=`
+        <div class="card p-3 my-2">
+            <p>${commentStorage[id][1]}</p>
+        </div>
+        `;
+    }
+
+    function reloadCommentButtons(){
+        let allCommentButtons = document.querySelectorAll(".btn.btn-secondary.comment-btn");
+
+        allCommentButtons.forEach(button =>{
+            button.addEventListener("click", ()=>{
+                let buttonID = button.id.toString();
+                buttonID = parseInt(buttonID.replace("comment-btn-", ""));
+                showPage(commentPage);
+                loadCommentPage(buttonID);
+
+            })
+        })
+    }
+    
+    
 
     showPage(loginPage);
 
@@ -35,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (usernameInput === validUsername && passwordInput === validPassword) {
             showPage(homePage);
             updateProfile();
+            reloadCommentButtons();
         } else {
             alert("Invalid username or password. Try again.");
         }
@@ -55,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
     backButtons.forEach(button => {
         button.addEventListener("click", () => {
             showPage(homePage);
+            reloadCommentButtons();
         });
     });
 
@@ -68,16 +108,20 @@ document.addEventListener("DOMContentLoaded", () => {
             const newPost = document.createElement("div");
             newPost.classList.add("card", "p-3", "my-2");
 
+            commentButtonCount++;
+
             newPost.innerHTML = `
                 <h6><strong>${profileName}</strong></h6>
                 <img src="${URL.createObjectURL(postPhoto)}" alt="Post Image" class="img-fluid mb-2">
                 <h5>${postTitle}</h5>
                 <p>${postDescription}</p>
-                <button class="btn btn-secondary comment-btn">Comment</button>
+                <button id="comment-btn-${commentButtonCount}" class="btn btn-secondary comment-btn">Comment</button>
             `;
+            commentStorage.push(["random comment","random comment"]);
 
             postContainer.appendChild(newPost);
             showPage(homePage);
+            reloadCommentButtons();
         } else {
             alert("Please fill all fields and select a photo.");
         }
@@ -101,6 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updateProfile();
         showPage(homePage);
+        reloadCommentButtons();
     });
 
     function updateProfile() {
