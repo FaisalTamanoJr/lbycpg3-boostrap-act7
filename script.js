@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loginPage = document.getElementById("login-page");
     const homePage = document.getElementById("home-page");
     const postPage = document.getElementById("post-page");
-    const friendListPage = document.getElementById("friend-list");
+    const friendListPage = document.getElementById("friend-page");
     const editProfilePage = document.getElementById("edit-profile-page");
 
     const loginForm = document.getElementById("login-form");
