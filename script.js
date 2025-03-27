@@ -21,7 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let profilePhoto = "default-avatar.jpg";
     let profileName = "Username";
 
-    let commentStorage = ["All posts contain 2 random comments","2 random comments"];
+    let commentStorage = [
+        ["All posts contain 2 random comments","2 random comments"]
+    ];
 
     let commentButtonCount = 0;
 
@@ -30,8 +32,19 @@ document.addEventListener("DOMContentLoaded", () => {
         page.classList.remove("d-none");
     }
 
-    function loadCommentPage() {
-            
+    function loadCommentPage(id) {
+        let commentContainer = document.getElementById("comments");
+        commentContainer.innerHTML=``;
+        commentContainer.innerHTML+=`
+        <div class="card p-3 my-2">
+            <p>${commentStorage[id][0]}</p>
+        </div>
+        `;
+        commentContainer.innerHTML+=`
+        <div class="card p-3 my-2">
+            <p>${commentStorage[id][1]}</p>
+        </div>
+        `;
     }
 
     function reloadCommentButtons(){
@@ -42,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 let buttonID = button.id.toString();
                 buttonID = parseInt(buttonID.replace("comment-btn-", ""));
                 showPage(commentPage);
-                let commentCotainer = document.getElementById("comments");
+                loadCommentPage(buttonID);
 
             })
         })
@@ -104,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <p>${postDescription}</p>
                 <button id="comment-btn-${commentButtonCount}" class="btn btn-secondary comment-btn">Comment</button>
             `;
-            commentStorage.push(["random comment","random comment"])
+            commentStorage.push(["random comment","random comment"]);
 
             postContainer.appendChild(newPost);
             showPage(homePage);
@@ -132,6 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         updateProfile();
         showPage(homePage);
+        reloadCommentButtons();
     });
 
     function updateProfile() {
