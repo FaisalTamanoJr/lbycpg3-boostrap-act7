@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const postPage = document.getElementById("post-page");
     const friendListPage = document.getElementById("friend-page");
     const editProfilePage = document.getElementById("edit-profile-page");
+    const commentPage = document.getElementById("comment-page");
 
     const loginForm = document.getElementById("login-form");
     const logoutBtn = document.getElementById("logout-btn");
@@ -20,9 +21,20 @@ document.addEventListener("DOMContentLoaded", () => {
     let profilePhoto = "default-avatar.jpg";
     let profileName = "Username";
 
+    let commentStorage;
+
     function showPage(page) {
-        [loginPage, homePage, postPage, friendListPage, editProfilePage].forEach(p => p.classList.add("d-none"));
+        [loginPage, homePage, postPage, friendListPage, editProfilePage, commentPage].forEach(p => p.classList.add("d-none"));
         page.classList.remove("d-none");
+    }
+
+    function reloadCommentButtons(){
+        let allCommentButtons = document.querySelectorAll("btn btn-secondary comment-btn");
+        allCommentButtons.forEach(button =>{
+            button.addEventListener("click", ()=>{
+                let buttonID = parseInt(button.id.toString.remove("comment-btn-"));
+            })
+        })
     }
 
     showPage(loginPage);
